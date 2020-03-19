@@ -1,5 +1,3 @@
-
-# Importing modules 
 from tkinter import * 
 from tkinter import messagebox
 from tkinter import scrolledtext
@@ -8,6 +6,7 @@ import requests
 import bs4
 import mysql.connector  
 import re
+
 # Main Window 
 root = Tk()
 root.title("Student Management System")
