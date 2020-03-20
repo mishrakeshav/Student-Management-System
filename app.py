@@ -1,3 +1,5 @@
+
+# importing modules
 from tkinter import * 
 from tkinter import messagebox
 from tkinter import scrolledtext
@@ -6,6 +8,8 @@ import requests
 import bs4
 import mysql.connector  
 import re
+import matplotlib.pyplot as plt
+
 
 # Main Window 
 root = Tk()
@@ -18,28 +22,28 @@ re_1 = re.compile(r"(\b100\b|\b[1-9][0-9]?\b)")
 re_2 = re.compile(r"[a-zA-z]{2,25}(\s[a-zA-z]{2,25})?") 
 
 def get_temperature():
-    # try:
-	#     city = "Mumbai"
-	#     socket.create_connection(("www.google.com", 80))
-	#     a1 = "http://api.openweathermap.org/data/2.5/weather?units=metric"
-	#     a2 = "&q=" + city
-	#     a3 = "&appid=c6e315d09197cec231495138183954bd"
+    try:
+	    city = "Mumbai"
+	    socket.create_connection(("www.google.com", 80))
+	    a1 = "http://api.openweathermap.org/data/2.5/weather?units=metric"
+	    a2 = "&q=" + city
+	    a3 = "&appid=c6e315d09197cec231495138183954bd"
 	
-	#     api_address = a1 + a2 + a3
-	#     res1 = requests.get(api_address)
-	#     #print(res1)
+	    api_address = a1 + a2 + a3
+	    res1 = requests.get(api_address)
+	    #print(res1)
 	
-	#     j1 = res1.json()
-	#     #print(j1)
+	    j1 = res1.json()
+	    #print(j1)
 
-	#     d1 = j1['main']
-	#     #print(d1)
-	#     temp = d1['temp']
-	#     #print("Temp : ", temp)
-    # except OSError:
-	#     print("Check network")
-    # return temp
-    return 31
+	    d1 = j1['main']
+	    #print(d1)
+	    temp = d1['temp']
+	    #print("Temp : ", temp)
+    except OSError:
+	    print("Check network")
+    return temp
+    
 def get_quote():
     res = requests.get("https://www.brainyquote.com/quotes_of_the_day.html")
     # print(res)
@@ -62,7 +66,9 @@ def update():
 def delete():
     delete.deiconify()
     root.withdraw()
-
+def graph():
+    graph.deiconify()
+    root.withdraw()
 def view():
     view.deiconify()
     root.withdraw() 
@@ -83,8 +89,10 @@ def view():
             mdata = mdata + str(d[0]) + " " + str(d[1]) + " " + str(d[2]) + "\n"
         st.insert(INSERT,mdata)
         mydb.commit() 
+        mydb.close()
     except mysql.connector.errors as e:
         mydb.rollback()
+        mydb.close()
         messagebox.showerror("Database error",e)
         
 
@@ -100,7 +108,7 @@ add_button = Button(mainframe, text = " Add ",command = add, pady = 10,padx = 40
 view_button = Button(mainframe, text = " View ",command = view, pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 upadate_button = Button(mainframe, text = "Update",command = update, pady = 10,padx = 36,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 delete_button = Button(mainframe, text = "Delete",command = delete, pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
-graph_button = Button(mainframe, text = "Graph", pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
+graph_button = Button(mainframe, text = "Graph",command = graph, pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 q1 , q2 = get_quote()
 quote1 = Label(root,text = q1,font = ('ariel', 10), bd = 1,anchor =W)
 quote2 = Label(root,text = q2,font = ('ariel', 10), bd = 1,anchor =W)
@@ -331,7 +339,7 @@ delete_back.pack(pady = 10)
 
 #View Window
 view = Toplevel(root)
-view.title("Student Management System")
+view.title("Get stats")
 view.geometry("425x550+400+80")
 view.iconbitmap("images/Vexels-Office-Bulb.ico")
 view.resizable(False,False)
@@ -348,5 +356,73 @@ btnViewBack = Button(view, text = "Back", command = f4)
 
 st.pack(pady = 10)
 btnViewBack.pack(pady = 10)
+
+# Graph 
+graph= Toplevel(root)
+graph.title("Student Management System")
+graph.geometry("425x550+400+80")
+graph.iconbitmap("images/Vexels-Office-Bulb.ico")
+graph.resizable(False,False)
+graph.withdraw()
+
+
+def getData():
+    try:
+        mydb = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        passwd = "root",
+        database = "SMS"
+        )
+        my_cursor = mydb.cursor()
+        sql = "SELECT * FROM students ORDER BY rollno"
+        my_cursor.execute(sql)
+        data = my_cursor.fetchall()
+        r = []
+        n = []
+        m = []
+        for roll_number,name,marks in data:
+            r.append(roll_number)
+            n.append(name)
+            m.append(marks)
+        return r,n,m 
+        
+
+    except mysql.connector.errors as e:
+        mydb.rollback()
+        mydb.close()
+        messagebox.showerror("Database error",e)
+def line():
+    rollno , names , marks = getData()
+    plt.plot(names,marks,label = "Marks")
+    plt.title("Students Details")
+    plt.xlabel("Students name")
+    plt.ylabel("Marks")
+    plt.grid()
+    plt.show() 
+    
+def bar():
+    rollno , names , marks = getData()
+    plt.bar(names,marks)
+    plt.title("Students scores",fontsize = 20)
+    plt.xlabel("Students name", fontsize = 15)
+    plt.ylabel("Students marks",fontsize = 15)
+    plt.grid()
+    plt.show() 
+def graph_back():
+    
+    root.deiconify()
+    graph.withdraw()
+
+frame_graph = LabelFrame(graph, padx = 125, pady = 50,bg = "#fce38a")
+frame_graph.pack(pady = 20, padx =10)
+
+line_graph = Button(frame_graph, text = "Line Graph",command = line, pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
+bar_graph = Button(frame_graph, text = "Bar Graph",command = bar,  pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
+back_graph = Button(frame_graph, text = "Back",command = graph_back,  pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
+
+line_graph.pack(pady = 10)
+bar_graph.pack(pady = 10)
+back_graph.pack(pady = 10)
 
 root.mainloop()
