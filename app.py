@@ -1,4 +1,3 @@
-
 # importing modules
 from tkinter import * 
 from tkinter import messagebox
@@ -128,19 +127,19 @@ temp.grid(row = 5, column = 1, sticky = W + E,padx = 10,pady =5)
 
 # Add window
 add = Toplevel(root)
-add.title("Student Management System")
+add.title("Add student")
 add.geometry("425x550+400+80")
 add.iconbitmap("images/Vexels-Office-Bulb.ico")
 add.resizable(False,False)
 add.withdraw()
 
-lblEid = Label(add, text= "Enter student's rollno")
+lblEid = Label(add, text= "Enter student's rollno",font = ('ariel',12))
 entEid = Entry(add, bd = 5)
 
-lblEname = Label(add, text = "Enter student's name")
+lblEname = Label(add, text = "Enter student's name",font = ('ariel',12))
 entEname = Entry(add, bd = 5)
 
-lblMarks = Label(add, text = "Enter student's Marks")
+lblMarks = Label(add, text = "Enter student's Marks",font = ('ariel',12))
 entmarks = Entry(add, bd = 5)
 
 def addstudent():
@@ -180,7 +179,7 @@ def addstudent():
         messagebox.showerror("Error",e)
     
 
-add_save = Button(add, text = "Save", command = addstudent)
+add_save = Button(add, text = "Save", command = addstudent,pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 
 def back():
     entEid.delete(0, END)
@@ -188,7 +187,7 @@ def back():
     entmarks.delete(0,END)
     root.deiconify()
     add.withdraw()
-add_back = Button(add, text = "Back", command = back)
+add_back = Button(add, text = "Back", command = back,pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 lblEid.pack(pady = 10)
 entEid.pack(pady = 10)
 lblEname.pack(pady = 10)
@@ -201,19 +200,19 @@ add_back.pack(pady = 10)
 
 # Update window
 update = Toplevel(root)
-update.title("Student Management System")
+update.title("Update Students Data")
 update.geometry("425x550+400+80")
 update.iconbitmap("images/Vexels-Office-Bulb.ico")
 update.resizable(False,False)
 update.withdraw()
 
-update_id  = Label(update, text= "Enter student's rollno")
+update_id  = Label(update, text= "Enter student's rollno",font = ("ariel",12))
 updateEid = Entry(update, bd = 5)
 
-update_name = Label(update, text = "Enter student's name")
+update_name = Label(update, text = "Enter student's name",font = ("ariel",12))
 updateName = Entry(update, bd = 5)
 
-update_marks = Label(update, text = "Enter student's Marks")
+update_marks = Label(update, text = "Enter student's Marks",font = ("ariel",12))
 updateMarks = Entry(update, bd = 5)
 
 def update_student():
@@ -259,7 +258,7 @@ def update_student():
         messagebox.showerror("Error",e) 
 
     
-update_save = Button(update, text = "Save", command = update_student)
+update_save = Button(update, text = "Save", command = update_student,pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 
 def update_back():
     updateEid.delete(0, END)
@@ -267,7 +266,7 @@ def update_back():
     updateMarks.delete(0, END)
     root.deiconify()
     update.withdraw()
-update_back = Button(update, text = "Back", command = update_back)
+update_back = Button(update, text = "Back", command = update_back,pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 update_id.pack(pady = 10)
 updateEid.pack(pady = 10)
 update_name.pack(pady = 10)
@@ -280,13 +279,13 @@ update_back.pack(pady = 10)
 
 # delete window
 delete = Toplevel(root)
-delete.title("Student Management System")
+delete.title("Delete Students Data")
 delete.geometry("425x550+400+80")
 delete.iconbitmap("images/Vexels-Office-Bulb.ico")
 delete.resizable(False,False)
 delete.withdraw()
 
-delete_id  = Label(delete, text= "Enter student rollno")
+delete_id  = Label(delete, text= "Enter student rollno",font = ('ariel', 12))
 deleteEid = Entry(delete, bd = 5)
 
 def delete_student():
@@ -322,13 +321,13 @@ def delete_student():
         messagebox.showerror("Error",e)
     
     print(eid)
-delete_save = Button(delete, text = "Save", command = delete_student)
+delete_save = Button(delete, text = "Delete", command = delete_student, pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 
 def delete_back():
     deleteEid.delete(0, END)
     root.deiconify()
     delete.withdraw()
-delete_back = Button(delete, text = "Back", command = delete_back)
+delete_back = Button(delete, text = "Back", command = delete_back, pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 
 delete_id.pack(pady = 10)
 deleteEid.pack(pady = 10)
@@ -350,9 +349,9 @@ def f4():
     st.delete(1.0, END)
     root.deiconify()
     view.withdraw()
-st = scrolledtext.ScrolledText(view, width = 30, height = 5)
+st = scrolledtext.ScrolledText(view, width = 30, height = 10,font = ('ariel', 10))
 
-btnViewBack = Button(view, text = "Back", command = f4)
+btnViewBack = Button(view, text = "Back", command = f4, pady = 10,padx = 40,fg = "#000000", bg = "#ecfbfc",font = ('ariel', 12),activebackground = "#f38181")
 
 st.pack(pady = 10)
 btnViewBack.pack(pady = 10)
